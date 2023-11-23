@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function ReportsBarChartData() {
-  const [growths, setGrowths] = useState([]);
+  const [growths, setGrowths] = useState({});
 
   useEffect(() => {
     Growth();
@@ -11,17 +11,15 @@ function ReportsBarChartData() {
   const Growth = async () => {
     try {
       const response = await axios.get("http://localhost:8000/engagement/growthlist");
-      console.log(response.data, "00000000000");
-      setGrowths(response.data);
+      setGrowths(response.data[0]);
     } catch (err) {
       console.log(err);
     }
   };
-  console.log(growths, "growtheeeeeeeee");
+  const { _id, __v, ...newGrowths } = growths;
   return {
     labels: ["M", "T", "W", "T", "F", "S", "S"],
-    datasets: [{ label: "Growth", data: growths }],
-    // datasets: { label: "Growth", data: [50, 20, 10, 22, 50, 10, 40] },
+    datasets: { label: "Growth", data: Object.values(newGrowths) },
   };
 }
 

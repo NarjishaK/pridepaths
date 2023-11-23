@@ -100,7 +100,6 @@ function OrdersOverview() {
       </MDBox>
       <div>
         <Dialog open={open} onClose={handleClose}>
-          {/* <DialogTitle>Subscribe</DialogTitle> */}
           <DialogContent>
             <DialogContentText>Edit</DialogContentText>
             <TextField

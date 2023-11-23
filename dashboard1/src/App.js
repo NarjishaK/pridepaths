@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
@@ -52,6 +37,7 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 // Images
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -68,6 +54,12 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  var template = "Front";
+  if (pathname == "/home") {
+    template = "Front";
+  } else {
+    template = layout;
+  }
 
   // Cache for the rtl
   useMemo(() => {
@@ -150,7 +142,7 @@ export default function App() {
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
-        {layout === "dashboard" && (
+        {template === "dashboard" && (
           <>
             <Sidenav
               color={sidenavColor}
@@ -164,7 +156,7 @@ export default function App() {
             {configsButton}
           </>
         )}
-        {layout === "vr" && <Configurator />}
+        {template === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/dashboard" />} />
@@ -174,7 +166,7 @@ export default function App() {
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {template === "dashboard" && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -188,7 +180,7 @@ export default function App() {
           {configsButton}
         </>
       )}
-      {layout === "vr" && <Configurator />}
+      {template === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/authentication/sign-in" />} />

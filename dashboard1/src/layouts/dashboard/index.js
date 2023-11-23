@@ -36,11 +36,28 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { AiFillEdit } from "react-icons/ai";
+import React from "react";
+import TimelineItem from "examples/Timeline/TimelineItem";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import { Button } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Instagram } from "@mui/icons-material";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
-  // instagram
+  const { sales, tasks } = reportsLineChartData();
+  // instagram list
+  const [reel, setReel] = useState("");
+  const [reach, setReach] = useState("");
+  const [lead, setLead] = useState("");
+  const [post, setPost] = useState("");
+  const [selectedData, setSelectedData] = useState("");
   const [instagram, setInstagram] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     Insta();
@@ -48,13 +65,49 @@ function Dashboard() {
   const Insta = async () => {
     try {
       const response = await axios.get("http://localhost:8000/insta/instalist");
+      console.log(response.data);
       setInstagram(response.data);
-      // console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // instagram edit
+  const [open, setOpen] = React.useState(false);
+
+  const handleEdit = () => {
+    const selectedData = instagram.find((instadetails) => instadetails._id);
+    setSelectedData(selectedData);
+    setLead(selectedData.lead);
+    setPost(selectedData.post);
+    setReach(selectedData.reach);
+    setReel(selectedData.reel);
+    handleClickOpen();
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  //insta update
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const requestData = { lead, reach, reel, post };
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/insta/updateinsta/${id}`,
+        requestData
+      );
+      console.log(response.data);
+      if (response.status == "200") {
+        navigate("/profile");
+      }
     } catch (err) {
       console.log(err);
     }
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -70,8 +123,13 @@ function Dashboard() {
                   count={instadetails.post}
                   percentage={{
                     color: "success",
-                    amount: "+55%",
-                    label: "than lask week",
+                    amount: "+55% than last week",
+                    label: (
+                      <>
+                        {/* <AiFillEdit onClick={() => handleClickOpen(instadetails._id)} /> */}
+                        <AiFillEdit onClick={() => handleEdit(instadetails._id)} />
+                      </>
+                    ),
                   }}
                 />
               </MDBox>
@@ -175,6 +233,62 @@ function Dashboard() {
         </MDBox>
       </MDBox>
       <Footer />
+      <div>
+        <Dialog open={open} onClose={handleClose}>
+          {/* <DialogTitle>Subscribe</DialogTitle> */}
+          <DialogContent>
+            <DialogContentText>Edit</DialogContentText>
+            <TextField
+              onChange={(e) => setPost(e.target.value)}
+              value={post}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Insta Post"
+              type="number"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              onChange={(e) => setReel(e.target.value)}
+              value={reel}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Tota Reel"
+              type="number"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              onChange={(e) => setLead(e.target.value)}
+              value={lead}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="No.Lead"
+              type="type"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              onChange={(e) => setReach(e.target.value)}
+              value={reach}
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Insta Reach"
+              type="type"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleUpdate}>Done</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     </DashboardLayout>
   );
 }

@@ -69,7 +69,7 @@ function Overview() {
                 <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
                 <ProfileInfoCard
                   title="profile information"
-                  description={`Hi, I’m ${adminprofile.name} , Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality`}
+                  description={`Hi, I’m ${adminprofile.name} , Media Production Manager at PridePaths, brings innovation and creative flair, shaping excellence in every frame.`}
                   info={{
                     fullName: adminprofile.name,
                     mobile: adminprofile.phone,

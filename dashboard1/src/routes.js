@@ -44,7 +44,8 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-
+import Home from "userside/home";
+// import InstaEdit from "layouts/dashboard/components/OrdersOverview/index";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -112,6 +113,17 @@ const routes = [
     // icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  // {
+  //   key: "dasboardedit",
+  //   route: "/edit/:id",
+  //   component: <InstaEdit />,
+  //   noCollapse: true,
+  // },
+  {
+    key: "home",
+    route: "/home",
+    component: <Home />,
   },
 ];
 

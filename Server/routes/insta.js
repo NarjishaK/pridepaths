@@ -21,4 +21,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/instalist", Instacontroller.instalist);
+// router.get('/editinsta/:id', Instacontroller.editinsta);
+router.put('/updateinsta/:id',Instacontroller.updateinsta);
+
 module.exports = router;
